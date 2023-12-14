@@ -1,5 +1,6 @@
 plugins {
     application
+    jacoco
 }
 
 group = "org.danhov"
@@ -23,9 +24,17 @@ application {
     mainClass.set("org.danhov.App")
 }
 
+tasks.withType<JacocoReport> {
+    reports {
+        xml
+        html
+    }
+}
+
 tasks.test {
     useJUnitPlatform()
 }
+
 
 
 
