@@ -1,9 +1,14 @@
 package org.danhov;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.LinkedHashSet;
 import java.util.Set;
 
 public class StringDeduplicationUtil {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(StringDeduplicationUtil.class.getName());
 
     // This class is not designed to be instantiated. It should be used in a static context.
     // By declaring a private constructor, we block this implicit public constructor.
@@ -16,11 +21,9 @@ public class StringDeduplicationUtil {
      * @return the modified string with duplicate characters removed
      * @throws IllegalArgumentException if the input is null or empty
      */
-    public static String removeDuplicates(String input) {
-        if (input == null || input.isEmpty()) {
-            throw new IllegalArgumentException("Input cannot be null or empty");
-        }
-        input = input.strip();
+    public static String removeDuplicates(String input) throws IllegalArgumentException {
+        input = validateInput(input);
+
         StringBuilder stringBuilder = new StringBuilder();
 
         input.chars()
@@ -32,10 +35,7 @@ public class StringDeduplicationUtil {
 
     //Alternative solution could be implemented via LinkedHashSet
     public static String removeDuplicatesLinkedHashSet(String input) {
-        if (input == null || input.isEmpty()) {
-            throw new IllegalArgumentException("Input cannot be null or empty");
-        }
-        input = input.strip();
+        input = validateInput(input);
         Set<Character> charSet = new LinkedHashSet<>();
 
         for (char c : input.toCharArray()) {
@@ -48,6 +48,16 @@ public class StringDeduplicationUtil {
         }
 
         return stringBuilder.toString();
+    }
+
+    private static String validateInput(String input) {
+        if (input == null || input.isEmpty()) {
+            LOGGER.error("Input cannot be null or empty");
+            throw new IllegalArgumentException("Input cannot be null or empty");
+        }
+
+        input = input.strip();
+        return input;
     }
 
 }
